@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background-color: #064e3b;
+  min-height: 100vh;
+}
+
+html.a11y-large-text {
+  font-size: 112.5%;
+}
+
+html.a11y-contrast body {
+  background-color: #000;
+}
+
+html.a11y-contrast .a11y-contrast-target {
+  filter: contrast(1.35) saturate(1.15);
+}

@@ -209,7 +209,6 @@ const App = () => {
               {/* crisp accent circles breaking out of the card corners, reference-style */}
               <span className="hidden sm:block absolute -top-5 -left-5 w-14 h-14 rounded-full border-[6px] border-marrakech-gold z-10 pointer-events-none" />
               <span className="hidden sm:block absolute top-24 -left-8 w-6 h-6 rounded-full bg-marrakech-maroon z-10 pointer-events-none" />
-              <span className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-marrakech-gold-light/25 backdrop-blur-sm border-2 border-marrakech-gold-light z-10 pointer-events-none" />
 
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-marrakech-navy border-4 border-white sm:aspect-[909/373]">
                 <div className="flex flex-col sm:flex-row items-stretch h-full">

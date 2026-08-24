@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Music, Shirt, Coffee, Armchair, Send,
   Languages, Phone, X,
-  Instagram, Facebook, MessageCircle, Navigation
+  Instagram, Facebook, MessageCircle, Navigation, Globe
 } from 'lucide-react';
 
 
@@ -23,6 +23,7 @@ const ADDRESS = 'קדרון 6, גבעת זאב';
 const WHATSAPP_URL = `https://api.whatsapp.com/send?phone=${PHONE_INTL}`;
 const INSTAGRAM_URL = 'https://www.instagram.com/asher_chayoun/';
 const FACEBOOK_URL = 'https://m.facebook.com/profile.php?id=61586764259150';
+const WEBSITE_URL = 'https://marrakech-555.com/';
 const WAZE_URL = `https://waze.com/ul?q=${encodeURIComponent(ADDRESS)}&z=10&navigate=yes`;
 
 const content = {
@@ -191,6 +192,7 @@ const App = () => {
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><MessageCircle size={20} /></a>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Instagram size={20} /></a>
             <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Facebook size={20} /></a>
+            <a href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" aria-label="Website" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Globe size={20} /></a>
             <a href={WAZE_URL} target="_blank" rel="noopener noreferrer" aria-label="Waze" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Navigation size={20} /></a>
           </div>
         </aside>

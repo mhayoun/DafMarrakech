@@ -6,6 +6,7 @@ import {
   Accessibility, ZoomIn, ZoomOut, Contrast, RotateCcw
 } from 'lucide-react';
 
+
 // Assets
 import gateauxImg from './assets/gateaux.jpeg';
 import logoImg from './assets/logo.png';

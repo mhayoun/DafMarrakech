@@ -142,10 +142,10 @@ const App = () => {
       />
       <div className="fixed inset-0 z-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 140px rgba(43,32,19,0.22)' }} />
 
-      {/* Sidebar always sits on the physical left and content on the physical right */}
-      <div className="relative z-20 lg:flex lg:items-stretch" dir="ltr">
+      {/* Sidebar always sits on the physical left and content on the physical right; on mobile the sidebar moves to the end */}
+      <div className="relative z-20 flex flex-col lg:flex-row lg:items-stretch" dir="ltr">
         {/* Sidebar — logo, phone, lead form */}
-        <aside dir={t.dir} className="lg:w-80 lg:flex-none lg:h-screen lg:sticky lg:top-0 lg:overflow-y-auto flex flex-col bg-marrakech-cream border-b lg:border-b-0 lg:border-r border-marrakech-gold/30 shadow-xl z-30">
+        <aside dir={t.dir} className="order-2 lg:order-1 lg:w-80 lg:flex-none lg:h-screen lg:sticky lg:top-0 lg:overflow-y-auto flex flex-col bg-marrakech-cream border-t lg:border-t-0 lg:border-b-0 lg:border-r border-marrakech-gold/30 shadow-xl z-30">
           <div className="p-5 sm:p-6 flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -170,7 +170,7 @@ const App = () => {
               <p className="text-marrakech-ink/60 text-sm mt-1">{t.sidebarHelper}</p>
             </div>
 
-            <div className="hidden lg:block">{leadForm}</div>
+            {leadForm}
 
             <div className="rounded-xl bg-marrakech-navy px-4 py-3 text-center shadow-md">
               <p className="text-marrakech-gold font-black text-sm">{t.specialOffer.title}</p>
@@ -196,7 +196,7 @@ const App = () => {
         </aside>
 
         {/* Content: headline, slider, social band, 4 services — that's it */}
-        <main dir={t.dir} className="lg:flex-1 lg:h-screen lg:overflow-y-auto">
+        <main dir={t.dir} className="order-1 lg:order-2 lg:flex-1 lg:h-screen lg:overflow-y-auto">
           <section className="relative px-5 sm:px-8 lg:px-12 pt-8 sm:pt-12 pb-10">
             {/* warm lantern-glow accents */}
             <div className="lantern-glow absolute -top-6 start-4 w-40 h-40 rounded-full bg-marrakech-gold/40 blur-3xl pointer-events-none" />
@@ -263,11 +263,6 @@ const App = () => {
                   </div>
                 </button>
               ))}
-            </div>
-
-            <div className="lg:hidden mt-10">
-              <p className="text-center text-marrakech-gold font-bold mb-3">{t.sidebarHelper}</p>
-              {leadForm}
             </div>
 
             <p className="text-center text-marrakech-ink/40 text-xs mt-8">© {new Date().getFullYear()} {t.brand} — {t.copyright}</p>

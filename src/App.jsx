@@ -226,9 +226,15 @@ const App = () => {
                   </div>
                   <button
                     onClick={() => setLightbox(heroImage)}
-                    className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy"
+                    className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy overflow-hidden"
                   >
                     <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover" />
+                    {/* warm lantern-light glow shining over the flyer's lantern lamps */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="lantern-glow absolute top-[10%] start-[14%] w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-amber-300 blur-2xl mix-blend-screen" />
+                      <div className="lantern-glow-delayed absolute top-[6%] end-[10%] w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-orange-300 blur-2xl mix-blend-screen" />
+                      <div className="lantern-glow absolute top-[45%] end-[6%] w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-marrakech-gold-light blur-xl mix-blend-screen" />
+                    </div>
                   </button>
                 </div>
               </div>

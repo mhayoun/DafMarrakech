@@ -96,6 +96,24 @@ const App = () => {
     window.open(`https://wa.me/${PHONE_INTL}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const logoHeader = (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <img src={logoImg} alt={t.brand} className="w-11 h-11 rounded-full shadow-md" />
+        <div className="flex flex-col leading-tight">
+          <span className="text-base font-black text-marrakech-gold tracking-tighter">{t.brand}</span>
+          <span className="text-[10px] text-marrakech-ink/60 font-bold">{t.tagline}</span>
+        </div>
+      </div>
+      <button
+        onClick={() => setLang(lang === 'fr' ? 'he' : 'fr')}
+        className="flex items-center gap-1.5 bg-marrakech-gold text-marrakech-navy px-3 py-1.5 rounded-full text-xs font-bold shadow active:scale-95 transition-transform"
+      >
+        <Languages size={14} /> {lang === 'fr' ? 'עברית' : 'FR'}
+      </button>
+    </div>
+  );
+
   const leadForm = (
     <div className="space-y-2.5 pt-1">
       <input
@@ -143,26 +161,17 @@ const App = () => {
       />
       <div className="fixed inset-0 z-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 140px rgba(43,32,19,0.22)' }} />
 
+      {/* Logo + language switch always stay pinned at the very top on mobile, even though the rest of the sidebar moves to the end */}
+      <div dir={t.dir} className="lg:hidden relative z-30 p-5 sm:p-6 bg-marrakech-cream border-b border-marrakech-gold/30 shadow-xl">
+        {logoHeader}
+      </div>
+
       {/* Sidebar always sits on the physical left and content on the physical right; on mobile the sidebar moves to the end */}
       <div className="relative z-20 flex flex-col lg:flex-row lg:items-stretch" dir="ltr">
         {/* Sidebar — logo, phone, lead form */}
         <aside dir={t.dir} className="order-2 lg:order-1 lg:w-80 lg:flex-none lg:h-screen lg:sticky lg:top-0 lg:overflow-y-auto flex flex-col bg-marrakech-cream border-t lg:border-t-0 lg:border-b-0 lg:border-r border-marrakech-gold/30 shadow-xl z-30">
           <div className="p-5 sm:p-6 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img src={logoImg} alt={t.brand} className="w-11 h-11 rounded-full shadow-md" />
-                <div className="flex flex-col leading-tight">
-                  <span className="text-base font-black text-marrakech-gold tracking-tighter">{t.brand}</span>
-                  <span className="text-[10px] text-marrakech-ink/60 font-bold">{t.tagline}</span>
-                </div>
-              </div>
-              <button
-                onClick={() => setLang(lang === 'fr' ? 'he' : 'fr')}
-                className="flex items-center gap-1.5 bg-marrakech-gold text-marrakech-navy px-3 py-1.5 rounded-full text-xs font-bold shadow active:scale-95 transition-transform"
-              >
-                <Languages size={14} /> {lang === 'fr' ? 'עברית' : 'FR'}
-              </button>
-            </div>
+            <div className="hidden lg:block">{logoHeader}</div>
 
             <div className="text-center pt-1">
               <a href={`tel:${PHONE_TEL}`} className="block text-2xl sm:text-3xl font-black text-marrakech-navy hover:text-marrakech-gold transition-colors tracking-tight">

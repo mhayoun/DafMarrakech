@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Music, Shirt, Coffee, Armchair, Send,
   Languages, Phone, X,
-  Instagram, Facebook, MessageCircle, Navigation,
-  Accessibility, ZoomIn, ZoomOut, Contrast, RotateCcw
+  Instagram, Facebook, MessageCircle, Navigation
 } from 'lucide-react';
 
 
@@ -76,16 +75,7 @@ const content = {
 const App = () => {
   const [lang, setLang] = useState('he');
   const [lightbox, setLightbox] = useState(null);
-  const [a11yOpen, setA11yOpen] = useState(false);
-  const [textScale, setTextScale] = useState(0);
-  const [highContrast, setHighContrast] = useState(false);
   const [formData, setFormData] = useState({ nom: '', telephone: '', date: '' });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle('a11y-large-text', textScale > 0);
-    root.classList.toggle('a11y-contrast', highContrast);
-  }, [textScale, highContrast]);
 
   const t = content[lang];
   const isRtl = t.dir === 'rtl';
@@ -106,7 +96,7 @@ const App = () => {
   };
 
   return (
-    <div className={`min-h-screen font-serif relative a11y-contrast-target ${isRtl ? 'rtl text-right' : 'ltr text-left'}`} dir={t.dir}>
+    <div className={`min-h-screen font-serif relative ${isRtl ? 'rtl text-right' : 'ltr text-left'}`} dir={t.dir}>
       {/* Background — warm cream marble, layered with gold mashrabiya lattice, sparkle and lantern-light glow */}
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-marrakech-cream via-marrakech-cream to-marrakech-cream-dark" />
       <div className="fixed inset-0 z-0 moroccan-lattice" />
@@ -193,7 +183,7 @@ const App = () => {
             <p className="text-[11px] text-marrakech-ink/50 leading-relaxed text-center">{t.privacyNote}</p>
           </div>
 
-          <div className="hidden lg:flex mt-auto p-5 sm:p-6 border-t border-marrakech-gold/20 items-center justify-center gap-5">
+          <div className="flex mt-auto p-5 sm:p-6 border-t border-marrakech-gold/20 items-center justify-center gap-5">
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><MessageCircle size={20} /></a>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Instagram size={20} /></a>
             <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Facebook size={20} /></a>
@@ -276,32 +266,18 @@ const App = () => {
         </main>
       </div>
 
-      {/* Floating accessibility button */}
-      <div className="fixed top-4 right-4 z-[250]">
-        <button
-          onClick={() => setA11yOpen((o) => !o)}
-          aria-label={t.a11y.open}
-          className="w-11 h-11 rounded-full bg-marrakech-gold text-marrakech-navy shadow-xl flex items-center justify-center active:scale-95 transition-transform"
-        >
-          <Accessibility size={20} />
-        </button>
-        {a11yOpen && (
-          <div dir={t.dir} className="absolute top-full right-0 mt-2 bg-white border border-black/10 rounded-2xl shadow-2xl p-3 flex flex-col gap-1 w-48">
-            <button onClick={() => setTextScale((s) => Math.min(s + 1, 2))} className="flex items-center gap-2 text-marrakech-ink hover:text-marrakech-gold text-sm font-bold p-2 rounded-lg hover:bg-marrakech-navy/5">
-              <ZoomIn size={16} /> {t.a11y.bigger}
-            </button>
-            <button onClick={() => setTextScale((s) => Math.max(s - 1, 0))} className="flex items-center gap-2 text-marrakech-ink hover:text-marrakech-gold text-sm font-bold p-2 rounded-lg hover:bg-marrakech-navy/5">
-              <ZoomOut size={16} /> {t.a11y.smaller}
-            </button>
-            <button onClick={() => setHighContrast((c) => !c)} className="flex items-center gap-2 text-marrakech-ink hover:text-marrakech-gold text-sm font-bold p-2 rounded-lg hover:bg-marrakech-navy/5">
-              <Contrast size={16} /> {t.a11y.contrast}
-            </button>
-            <button onClick={() => { setTextScale(0); setHighContrast(false); }} className="flex items-center gap-2 text-marrakech-ink/70 hover:text-marrakech-gold text-sm font-bold p-2 rounded-lg hover:bg-marrakech-navy/5">
-              <RotateCcw size={16} /> {t.a11y.reset}
-            </button>
-          </div>
-        )}
-      </div>
+      {/* Floating WhatsApp button */}
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+        className="fixed bottom-5 right-5 z-[250] w-14 h-14 rounded-full bg-[#25D366] text-white shadow-xl flex items-center justify-center active:scale-95 transition-transform"
+      >
+        <svg viewBox="0 0 32 32" width="28" height="28" fill="currentColor" aria-hidden="true">
+          <path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.34.655 4.53 1.792 6.393L3.5 29l7.83-2.246A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm6.98 16.986c-.297.833-1.463 1.53-2.404 1.732-.64.135-1.474.243-4.284-.92-3.593-1.487-5.905-5.135-6.086-5.372-.176-.238-1.462-1.947-1.462-3.715 0-1.768.923-2.636 1.252-2.998.328-.363.716-.454.955-.454.238 0 .478.002.687.012.22.01.516-.083.807.617.297.716 1.01 2.484 1.098 2.665.09.18.15.394.03.633-.12.24-.18.39-.358.6-.18.21-.377.47-.538.63-.18.18-.367.375-.158.735.21.36.933 1.54 2.003 2.494 1.375 1.226 2.534 1.606 2.894 1.786.36.18.57.15.78-.09.21-.24.899-1.05 1.14-1.41.238-.36.478-.3.807-.18.328.12 2.086.984 2.444 1.163.358.18.598.27.687.42.09.15.09.868-.207 1.703Z"/>
+        </svg>
+      </a>
 
       {/* Lightbox */}
       {lightbox && (

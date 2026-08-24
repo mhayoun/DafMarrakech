@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html, body {
   margin: 0;
-  background-color: #064e3b;
-  min-height: 100vh;
+  background-color: #F7F1E4;
 }
 
 html.a11y-large-text {
@@ -18,4 +17,42 @@ html.a11y-contrast body {
 
 html.a11y-contrast .a11y-contrast-target {
   filter: contrast(1.35) saturate(1.15);
+}
+
+/* Warm lantern-light flicker for the Moroccan-themed hero glow */
+@keyframes lanternFlicker {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.08); }
+}
+
+.lantern-glow {
+  animation: lanternFlicker 5s ease-in-out infinite;
+}
+
+.lantern-glow-delayed {
+  animation: lanternFlicker 6s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* Gold Moroccan lattice texture echoing the mashrabiya screens in the flyer artwork */
+.moroccan-lattice {
+  background-image:
+    radial-gradient(circle at 0 0, transparent 23%, rgba(184, 144, 62, 0.28) 24%, rgba(184, 144, 62, 0.28) 27%, transparent 28%),
+    radial-gradient(circle at 44px 44px, transparent 23%, rgba(184, 144, 62, 0.28) 24%, rgba(184, 144, 62, 0.28) 27%, transparent 28%);
+  background-size: 44px 44px;
+}
+
+/* Fine gold sparkle, echoing the glitter on the flyer's sheer curtain */
+.moroccan-sparkle {
+  background-image:
+    radial-gradient(circle, rgba(184, 144, 62, 0.55) 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(184, 144, 62, 0.4) 1px, transparent 1.4px);
+  background-size: 34px 34px, 22px 22px;
+  background-position: 0 0, 11px 17px;
+}
+
+/* Ornamental gold rule used above/below key headings */
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(184, 144, 62, 0.6), transparent);
 }

@@ -6,10 +6,20 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        heavy: ['Rubik', 'sans-serif'],
+        suez: ['"Suez One"', 'serif'],
+      },
       colors: {
-        'marrakech-green': '#064e3b',
-        'marrakech-gold': '#fbbf24',
-        'marrakech-amber': '#d97706',
+        'marrakech-cream': '#F7F1E4',
+        'marrakech-cream-dark': '#ECE0C6',
+        'marrakech-gold': '#B8903E',
+        'marrakech-gold-light': '#D9B876',
+        'marrakech-navy': '#1B2A4A',
+        'marrakech-ink': '#2B2013',
+        'marrakech-maroon': '#5E2233',
+        'marrakech-maroon-dark': '#2A0D17',
+        'marrakech-teal': '#0E6C67',
       },
     },
   },

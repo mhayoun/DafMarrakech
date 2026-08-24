@@ -34,6 +34,21 @@ html.a11y-contrast .a11y-contrast-target {
   animation-delay: 1.5s;
 }
 
+/* Bright pulsing flare sitting directly on the flyer's lantern bulbs */
+@keyframes lanternFlare {
+  0%, 100% { opacity: 0.55; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.lantern-flare {
+  animation: lanternFlare 2.4s ease-in-out infinite;
+}
+
+.lantern-flare-delayed {
+  animation: lanternFlare 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
 /* Gold Moroccan lattice texture echoing the mashrabiya screens in the flyer artwork */
 .moroccan-lattice {
   background-image:

@@ -229,11 +229,23 @@ const App = () => {
                     className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy overflow-hidden"
                   >
                     <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover" />
-                    {/* warm lantern-light glow shining over the flyer's lantern lamps */}
+                    {/* bright flare pulsing exactly on the flyer's own three lantern flames — physical positions, not mirrored by language direction */}
                     <div className="absolute inset-0 pointer-events-none">
-                      <div className="lantern-glow absolute top-[10%] start-[14%] w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-amber-300 blur-2xl mix-blend-screen" />
-                      <div className="lantern-glow-delayed absolute top-[6%] end-[10%] w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-orange-300 blur-2xl mix-blend-screen" />
-                      <div className="lantern-glow absolute top-[45%] end-[6%] w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-marrakech-gold-light blur-xl mix-blend-screen" />
+                      {/* top-right hanging lantern */}
+                      <div
+                        className="lantern-flare absolute top-[4%] right-[-2%] sm:top-[6%] sm:right-[1%] w-16 h-16 sm:w-24 sm:h-24 rounded-full mix-blend-screen"
+                        style={{ background: 'radial-gradient(circle, rgba(255,244,214,0.95) 0%, rgba(255,196,84,0.6) 40%, transparent 72%)' }}
+                      />
+                      {/* bottom-left standing lantern */}
+                      <div
+                        className="lantern-flare-delayed absolute top-[86%] left-[4%] sm:top-[80%] sm:left-[4%] w-12 h-12 sm:w-16 sm:h-16 rounded-full mix-blend-screen"
+                        style={{ background: 'radial-gradient(circle, rgba(255,244,214,0.9) 0%, rgba(255,196,84,0.55) 40%, transparent 72%)' }}
+                      />
+                      {/* bottom-right standing lantern */}
+                      <div
+                        className="lantern-flare absolute top-[85%] right-[4%] sm:top-[80%] sm:right-[8%] w-12 h-12 sm:w-16 sm:h-16 rounded-full mix-blend-screen"
+                        style={{ background: 'radial-gradient(circle, rgba(255,244,214,0.9) 0%, rgba(255,196,84,0.55) 40%, transparent 72%)' }}
+                      />
                     </div>
                   </button>
                 </div>

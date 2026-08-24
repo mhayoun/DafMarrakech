@@ -212,7 +212,7 @@ const App = () => {
               {/* crisp accent circles breaking out of the card corners, reference-style */}
               <span className="hidden sm:block absolute -top-5 -left-5 w-14 h-14 rounded-full border-[6px] border-marrakech-gold z-10 pointer-events-none" />
               <span className="hidden sm:block absolute top-24 -left-8 w-6 h-6 rounded-full bg-marrakech-maroon z-10 pointer-events-none" />
-              <span className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-marrakech-gold-light z-10 pointer-events-none" />
+              <span className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-marrakech-gold-light/25 backdrop-blur-sm border-2 border-marrakech-gold-light z-10 pointer-events-none" />
 
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-marrakech-navy border-4 border-white sm:aspect-[909/373]">
                 <div className="flex flex-col sm:flex-row items-stretch h-full">
@@ -224,7 +224,7 @@ const App = () => {
                     <p className="text-white text-lg sm:text-[32px] font-bold leading-tight">
                       {t.title}
                     </p>
-                    <span className="inline-block self-center sm:self-start bg-marrakech-gold text-marrakech-navy font-medium text-[15px] sm:text-[21px] px-4 py-1.5 rounded-full shadow mt-1">
+                    <span className="inline-block self-center sm:self-start bg-marrakech-gold/20 backdrop-blur-md border border-marrakech-gold/70 text-marrakech-gold-light font-medium text-[15px] sm:text-[21px] px-5 py-1.5 rounded-full shadow-[0_0_20px_rgba(184,144,62,0.35)] mt-1">
                       {t.specialOffer.title}
                     </span>
                   </div>
@@ -248,24 +248,23 @@ const App = () => {
               ))}
             </div>
 
-            {/* 4 services — same 359:168 wide card ratio as the reference model's product cards */}
-            <h2 className={`text-center text-xl sm:text-2xl text-marrakech-gold mt-8 mb-6 ${isRtl ? 'font-suez' : 'font-bold'}`}>{t.servicesTitle}</h2>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {/* 4 services in one row */}
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 mt-6">
               {servicesList.map((s) => (
                 <button
                   key={s.id}
                   onClick={() => setLightbox({ src: s.media, alt: s.label })}
-                  className="relative rounded-2xl overflow-hidden shadow-lg border border-marrakech-gold/30 bg-marrakech-navy aspect-[359/168]"
+                  className="relative rounded-2xl overflow-hidden shadow-lg border border-marrakech-gold/30 bg-marrakech-navy aspect-square"
                 >
                   <img
                     src={s.media}
                     alt={s.label}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-marrakech-navy via-marrakech-navy/25 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-0.5 py-2.5 font-heavy">
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-marrakech-navy via-marrakech-navy/40 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-0.5 py-2 sm:py-2.5 font-heavy">
                     <span className="text-marrakech-gold">{s.icon}</span>
-                    <span className="font-black text-white text-sm sm:text-lg leading-tight text-center">{s.label}</span>
+                    <span className="font-black text-white text-xs sm:text-base leading-tight text-center">{s.label}</span>
                   </div>
                 </button>
               ))}

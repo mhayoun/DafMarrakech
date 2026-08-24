@@ -95,6 +95,39 @@ const App = () => {
     window.open(`https://wa.me/${PHONE_INTL}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const leadForm = (
+    <div className="space-y-2.5 pt-1">
+      <input
+        type="text"
+        placeholder={t.labels.nom}
+        value={formData.nom}
+        className="w-full p-3 rounded-lg bg-white text-marrakech-ink font-bold outline-none border border-marrakech-gold/30 focus:border-marrakech-gold focus:ring-2 ring-marrakech-gold/30 text-sm"
+        onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+      />
+      <input
+        type="tel"
+        placeholder={t.labels.telephone}
+        value={formData.telephone}
+        className="w-full p-3 rounded-lg bg-white text-marrakech-ink font-bold outline-none border border-marrakech-gold/30 focus:border-marrakech-gold focus:ring-2 ring-marrakech-gold/30 text-sm"
+        onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
+      />
+      <input
+        type="date"
+        aria-label={t.labels.date}
+        value={formData.date}
+        className="w-full p-3 rounded-lg bg-white text-marrakech-ink font-bold outline-none border border-marrakech-gold/30 focus:border-marrakech-gold text-sm"
+        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+      />
+      <button
+        onClick={handleWhatsApp}
+        disabled={!formData.nom || !formData.telephone}
+        className="w-fit mx-auto mt-2 bg-marrakech-gold text-marrakech-navy font-black text-base py-3 px-10 rounded-full flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-transform disabled:opacity-40"
+      >
+        <Send size={16} className={isRtl ? 'rotate-180' : ''} /> {t.labels.btn}
+      </button>
+    </div>
+  );
+
   return (
     <div className={`min-h-screen font-serif relative ${isRtl ? 'rtl text-right' : 'ltr text-left'}`} dir={t.dir}>
       {/* Background — warm cream marble, layered with gold mashrabiya lattice, sparkle and lantern-light glow */}
@@ -137,36 +170,7 @@ const App = () => {
               <p className="text-marrakech-ink/60 text-sm mt-1">{t.sidebarHelper}</p>
             </div>
 
-            <div className="space-y-2.5 pt-1">
-              <input
-                type="text"
-                placeholder={t.labels.nom}
-                value={formData.nom}
-                className="w-full p-3 rounded-lg bg-white text-marrakech-ink font-bold outline-none border border-marrakech-gold/30 focus:border-marrakech-gold focus:ring-2 ring-marrakech-gold/30 text-sm"
-                onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-              />
-              <input
-                type="tel"
-                placeholder={t.labels.telephone}
-                value={formData.telephone}
-                className="w-full p-3 rounded-lg bg-white text-marrakech-ink font-bold outline-none border border-marrakech-gold/30 focus:border-marrakech-gold focus:ring-2 ring-marrakech-gold/30 text-sm"
-                onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-              />
-              <input
-                type="date"
-                aria-label={t.labels.date}
-                value={formData.date}
-                className="w-full p-3 rounded-lg bg-white text-marrakech-ink font-bold outline-none border border-marrakech-gold/30 focus:border-marrakech-gold text-sm"
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-              <button
-                onClick={handleWhatsApp}
-                disabled={!formData.nom || !formData.telephone}
-                className="w-fit mx-auto mt-2 bg-marrakech-gold text-marrakech-navy font-black text-base py-3 px-10 rounded-full flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-transform disabled:opacity-40"
-              >
-                <Send size={16} className={isRtl ? 'rotate-180' : ''} /> {t.labels.btn}
-              </button>
-            </div>
+            <div className="hidden lg:block">{leadForm}</div>
 
             <div className="rounded-xl bg-marrakech-navy px-4 py-3 text-center shadow-md">
               <p className="text-marrakech-gold font-black text-sm">{t.specialOffer.title}</p>
@@ -259,6 +263,11 @@ const App = () => {
                   </div>
                 </button>
               ))}
+            </div>
+
+            <div className="lg:hidden mt-10">
+              <p className="text-center text-marrakech-gold font-bold mb-3">{t.sidebarHelper}</p>
+              {leadForm}
             </div>
 
             <p className="text-center text-marrakech-ink/40 text-xs mt-8">© {new Date().getFullYear()} {t.brand} — {t.copyright}</p>

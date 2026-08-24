@@ -210,24 +210,24 @@ const App = () => {
               <span className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-marrakech-gold-light/25 backdrop-blur-sm border-2 border-marrakech-gold-light z-10 pointer-events-none" />
 
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-marrakech-navy border-4 border-white sm:aspect-[909/373]">
-                <div className="flex flex-col-reverse sm:flex-row items-stretch h-full">
-                  <div className="sm:w-1/2 p-6 sm:p-8 text-center sm:text-start flex flex-col justify-center gap-2 sm:gap-3 font-heavy">
-                    <p className="text-marrakech-gold text-[21px] sm:text-[32px] font-bold leading-none">{t.greeting}</p>
-                    <h1 className={`text-4xl sm:text-6xl text-marrakech-gold-light tracking-tight leading-[0.95] ${isRtl ? 'font-suez' : 'font-black'}`}>
+                <div className="flex flex-col sm:flex-row items-stretch h-full">
+                  <div className="sm:w-1/2 p-4 sm:p-8 text-center sm:text-start flex flex-col justify-center gap-1 sm:gap-3 font-heavy">
+                    <p className="text-marrakech-gold text-base sm:text-[32px] font-bold leading-none">{t.greeting}</p>
+                    <h1 className={`text-2xl sm:text-6xl text-marrakech-gold-light tracking-tight leading-[0.95] ${isRtl ? 'font-suez' : 'font-black'}`}>
                       {t.hook}
                     </h1>
-                    <p className="text-white text-lg sm:text-[32px] font-bold leading-tight">
+                    <p className="text-white text-sm sm:text-[32px] font-bold leading-tight">
                       {t.title}
                     </p>
-                    <span className="inline-block self-center sm:self-start bg-marrakech-gold/20 backdrop-blur-md border border-marrakech-gold/70 text-marrakech-gold-light font-medium text-[15px] sm:text-[21px] px-5 py-1.5 rounded-full shadow-[0_0_20px_rgba(184,144,62,0.35)] mt-1">
+                    <span className="inline-block self-center sm:self-start bg-marrakech-gold/20 backdrop-blur-md border border-marrakech-gold/70 text-marrakech-gold-light font-medium text-xs sm:text-[21px] px-4 sm:px-5 py-1 sm:py-1.5 rounded-full shadow-[0_0_20px_rgba(184,144,62,0.35)] mt-1">
                       {t.specialOffer.title}
                     </span>
                   </div>
                   <button
                     onClick={() => setLightbox(heroImage)}
-                    className="relative sm:w-1/2 h-56 sm:h-full min-h-[16rem] block w-full"
+                    className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy"
                   >
-                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-cover" />
+                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover" />
                   </button>
                 </div>
               </div>

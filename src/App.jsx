@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Music, Shirt, Coffee, Armchair, Send,
-  Languages, Phone, X,
+  Languages, Phone, X, Sparkles,
   Instagram, Facebook, MessageCircle, Navigation, Globe
 } from 'lucide-react';
 
@@ -14,6 +14,7 @@ import chairSceneImg from './assets/chair-scene.png';
 import dressesRackImg from './assets/dresses-rack-hd.jpeg';
 import musicImg from './assets/music.png';
 import hinaHeroImg from './assets/hina-hero.jpeg';
+import hinaHeroFrImg from './assets/hero-fr.jpeg';
 
 // Real business details
 const PHONE_DISPLAY = '052-2336877';
@@ -33,6 +34,7 @@ const content = {
     tagline: 'Design d’événements de style marocain',
     greeting: 'Mazal Tov !',
     hook: 'Henné royal !',
+    rentPromo: 'Location de matériel',
     title: 'Vous célébrez un henné, une Bar ou Bat Mitsva ?',
     subtitle: 'Chez « Marrakech », on s’occupe de tout pour un événement de rêve : décor complet et musique parfaite !',
     sidebarHelper: 'Ou laissez vos coordonnées ci-dessous et nous vous rappelons !',
@@ -55,6 +57,7 @@ const content = {
     tagline: 'עיצוב אירועים בסגנון מרוקאי',
     greeting: 'מזל טוב!',
     hook: 'חינה מלכותית!',
+    rentPromo: 'משכירים ציוד לחינה',
     title: 'חוגגים חינה, בר מצווה או בת מצווה?',
     subtitle: 'אנחנו ב"מרקש" נדאג לכם לאירוע חלומי עם ציוד מלא ומוזיקה מושלמת!',
     sidebarHelper: 'או תשאירו פרטים ואנחנו נחזור אליכם!',
@@ -81,7 +84,7 @@ const App = () => {
   const t = content[lang];
   const isRtl = t.dir === 'rtl';
 
-  const heroImage = { src: hinaHeroImg, alt: t.title };
+  const heroImage = { src: lang === 'fr' ? hinaHeroFrImg : hinaHeroImg, alt: t.title };
   const flyerImage = { src: flyerImg, alt: t.title };
 
   const servicesList = [
@@ -221,7 +224,15 @@ const App = () => {
 
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-marrakech-navy border-4 border-white sm:aspect-[909/373]">
                 <div className="flex flex-col sm:flex-row items-stretch h-full">
-                  <div className="sm:w-1/2 p-4 sm:p-8 text-center sm:text-start flex flex-col justify-center gap-1 sm:gap-3 font-heavy">
+                  <div className="relative sm:w-1/2 p-4 sm:p-8 text-center sm:text-start flex flex-col justify-center gap-1 sm:gap-3 font-heavy">
+                    {/* Circular promo medallion — top-right corner for French, mirrors to top-left for Hebrew */}
+                    <div className="hidden lg:flex promo-badge absolute top-4 end-4 z-20 items-center justify-center w-36 h-36 rounded-full bg-gradient-to-br from-marrakech-maroon to-marrakech-maroon-dark border-2 border-marrakech-gold shadow-2xl text-center">
+                      <span className="promo-spin absolute -inset-2 rounded-full border-2 border-dashed border-marrakech-gold-light/70 pointer-events-none" />
+                      <div className="flex flex-col items-center gap-1 px-3">
+                        <Sparkles size={20} className="text-marrakech-gold-light" />
+                        <span className="text-marrakech-gold-light font-black text-base leading-tight">{t.rentPromo}</span>
+                      </div>
+                    </div>
                     <p className="text-marrakech-gold text-base sm:text-[32px] font-bold leading-none">{t.greeting}</p>
                     <h1 className={`text-2xl sm:text-6xl text-marrakech-gold-light tracking-tight leading-[0.95] ${isRtl ? 'font-suez' : 'font-black'}`}>
                       {t.hook}
@@ -237,7 +248,7 @@ const App = () => {
                     onClick={() => setLightbox(heroImage)}
                     className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy overflow-hidden"
                   >
-                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover" />
+                    <img src={heroImage.src} alt={heroImage.alt} className={`w-full h-full object-contain sm:object-cover ${lang === 'fr' ? 'object-top' : ''}`} />
                     {/* bright flare pulsing exactly on the flyer's own three lantern flames — physical positions, not mirrored by language direction */}
                     <div className="absolute inset-0 pointer-events-none">
                       {/* top-right hanging lantern */}

@@ -66,6 +66,26 @@ html.a11y-contrast .a11y-contrast-target {
   background-position: 0 0, 11px 17px;
 }
 
+/* Pulsing glow for the "rent equipment" promo medallion */
+@keyframes promoPulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 184, 118, 0.55); }
+  50% { box-shadow: 0 0 0 9px rgba(217, 184, 118, 0); }
+}
+
+.promo-badge {
+  animation: promoPulseGlow 2.2s ease-out infinite;
+}
+
+/* Slowly rotating dashed ring around the promo medallion */
+@keyframes promoSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.promo-spin {
+  animation: promoSpin 14s linear infinite;
+}
+
 /* Ornamental gold rule used above/below key headings */
 .gold-divider {
   height: 1px;

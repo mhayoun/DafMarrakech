@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Music, Shirt, Coffee, Armchair, Send,
   Languages, Phone, X, Sparkles,
   Instagram, Facebook, MessageCircle, Navigation, Globe
 } from 'lucide-react';
+import { fetchSiteContent, urlFor } from './lib/sanityClient';
 
-
-// Assets
+// Assets — used as fallbacks until (or unless) the CMS provides content
 import gateauxImg from './assets/gateaux.jpeg';
 import logoImg from './assets/logo.png';
 import flyerImg from './assets/flyer.png';
@@ -16,18 +16,40 @@ import musicImg from './assets/music.png';
 import hinaHeroImg from './assets/hina-hero.jpeg';
 import hinaHeroFrImg from './assets/hero-fr.jpeg';
 
-// Real business details
-const PHONE_DISPLAY = '052-2336877';
-const PHONE_TEL = '0522336877';
-const PHONE_INTL = '972522336877';
-const ADDRESS = 'קדרון 6, גבעת זאב';
-const WHATSAPP_URL = `https://api.whatsapp.com/send?phone=${PHONE_INTL}`;
-const INSTAGRAM_URL = 'https://www.instagram.com/asher_chayoun/';
-const FACEBOOK_URL = 'https://m.facebook.com/profile.php?id=61586764259150';
-const WEBSITE_URL = 'https://marrakech-555.com/';
-const WAZE_URL = `https://waze.com/ul?q=${encodeURIComponent(ADDRESS)}&z=10&navigate=yes`;
+// Fallback business details, used until the CMS provides them
+const FALLBACK_PHONE_DISPLAY = '052-2336877';
+const FALLBACK_ADDRESS = 'קדרון 6, גבעת זאב';
+const FALLBACK_INSTAGRAM_URL = 'https://www.instagram.com/asher_chayoun/';
+const FALLBACK_FACEBOOK_URL = 'https://m.facebook.com/profile.php?id=61586764259150';
+const FALLBACK_WEBSITE_URL = 'https://marrakech-555.com/';
 
-const content = {
+// Derives the digits-only and international phone formats from a display string like "052-2336877"
+function derivePhoneParts(display) {
+  const digits = (display || '').replace(/\D/g, '');
+  const intl = digits.startsWith('0') ? `972${digits.slice(1)}` : digits;
+  return { tel: digits, intl };
+}
+
+// Overlays non-empty CMS fields onto the hardcoded fallback text, so a document
+// that's missing (or only partially filled in) never breaks the live site.
+function mergeLocale(base, cmsLocale) {
+  if (!cmsLocale) return base;
+  const merged = { ...base };
+  for (const [key, value] of Object.entries(cmsLocale)) {
+    if (value === undefined || value === null || value === '') continue;
+    if (key === 'labels' && typeof value === 'object') {
+      const filled = Object.fromEntries(Object.entries(value).filter(([, v]) => v));
+      merged.labels = { ...base.labels, ...filled };
+    } else if (key === 'usps') {
+      if (Array.isArray(value) && value.length) merged.usps = value;
+    } else {
+      merged[key] = value;
+    }
+  }
+  return merged;
+}
+
+const FALLBACK_CONTENT = {
   fr: {
     dir: 'ltr',
     brand: 'MARRAKECH',
@@ -39,7 +61,8 @@ const content = {
     subtitle: 'Chez « Marrakech », on s’occupe de tout pour un événement de rêve : décor complet et musique parfaite !',
     sidebarHelper: 'Ou laissez vos coordonnées ci-dessous et nous vous rappelons !',
     logisticsTitle: 'Réservez votre moment',
-    specialOffer: { title: 'Offre spéciale !', text: 'Tarifs préférentiels pour toute réservation ce mois-ci !' },
+    specialOfferTitle: 'Offre spéciale !',
+    specialOfferText: 'Tarifs préférentiels pour toute réservation ce mois-ci !',
     usps: ['Décor somptueux', 'Tenues authentiques', 'Son & lumière pro'],
     viewFlyer: 'Voir le flyer complet',
     servicesTitle: 'Nos services',
@@ -49,7 +72,6 @@ const content = {
       fauteuil: 'Décor', tenues: 'Tenues', musique: 'Musique', gateaux: 'Plateaux',
       nom: 'Nom complet*', telephone: 'Téléphone*', date: 'Date de l’événement', btn: 'Envoyer'
     },
-    a11y: { open: 'Menu d’accessibilité', bigger: 'Agrandir le texte', smaller: 'Réduire le texte', contrast: 'Contraste élevé', reset: 'Réinitialiser' }
   },
   he: {
     dir: 'rtl',
@@ -62,7 +84,8 @@ const content = {
     subtitle: 'אנחנו ב"מרקש" נדאג לכם לאירוע חלומי עם ציוד מלא ומוזיקה מושלמת!',
     sidebarHelper: 'או תשאירו פרטים ואנחנו נחזור אליכם!',
     logisticsTitle: 'הזמינו את הרגע שלכם',
-    specialOffer: { title: 'הטבה מיוחדת!', text: 'מחירים מיוחדים לסוגרים אירוע החודש!' },
+    specialOfferTitle: 'הטבה מיוחדת!',
+    specialOfferText: 'מחירים מיוחדים לסוגרים אירוע החודש!',
     usps: ['תפאורה מפוארת', 'תלבושות אותנטיות', 'תאורה והגברה מקצועית'],
     viewFlyer: 'צפו בפלייר המלא',
     servicesTitle: 'השירותים שלנו',
@@ -72,7 +95,6 @@ const content = {
       fauteuil: 'תפאורה', tenues: 'תלבושות', musique: 'מוזיקה', gateaux: 'מגשים',
       nom: 'שם מלא*', telephone: 'טלפון*', date: 'תאריך האירוע', btn: 'שליחה'
     },
-    a11y: { open: 'תפריט נגישות', bigger: 'הגדלת טקסט', smaller: 'הקטנת טקסט', contrast: 'ניגודיות גבוה', reset: 'איפוס' }
   }
 };
 
@@ -80,18 +102,43 @@ const App = () => {
   const [lang, setLang] = useState('he');
   const [lightbox, setLightbox] = useState(null);
   const [formData, setFormData] = useState({ nom: '', telephone: '', date: '' });
+  const [cms, setCms] = useState(null);
 
-  const t = content[lang];
+  useEffect(() => {
+    fetchSiteContent().then(setCms).catch(() => {});
+  }, []);
+
+  const t = useMemo(
+    () => mergeLocale(FALLBACK_CONTENT[lang], cms?.[lang === 'fr' ? 'french' : 'hebrew']),
+    [lang, cms]
+  );
   const isRtl = t.dir === 'rtl';
 
-  const heroImage = { src: lang === 'fr' ? hinaHeroFrImg : hinaHeroImg, alt: t.title };
-  const flyerImage = { src: flyerImg, alt: t.title };
+  const phoneDisplay = cms?.phone || FALLBACK_PHONE_DISPLAY;
+  const { tel: PHONE_TEL, intl: PHONE_INTL } = derivePhoneParts(phoneDisplay);
+  const ADDRESS = cms?.address || FALLBACK_ADDRESS;
+  const WHATSAPP_URL = `https://api.whatsapp.com/send?phone=${PHONE_INTL}`;
+  const INSTAGRAM_URL = cms?.instagramUrl || FALLBACK_INSTAGRAM_URL;
+  const FACEBOOK_URL = cms?.facebookUrl || FALLBACK_FACEBOOK_URL;
+  const WEBSITE_URL = cms?.websiteUrl || FALLBACK_WEBSITE_URL;
+  const WAZE_URL = `https://waze.com/ul?q=${encodeURIComponent(ADDRESS)}&z=10&navigate=yes`;
+
+  const cmsHeroImage = lang === 'fr' ? cms?.heroImageFr : cms?.heroImageHe;
+  const heroImage = {
+    src: cmsHeroImage ? urlFor(cmsHeroImage).width(1200).url() : (lang === 'fr' ? hinaHeroFrImg : hinaHeroImg),
+    alt: t.title,
+  };
+  const flyerImage = {
+    src: cms?.flyerImage ? urlFor(cms.flyerImage).width(1400).url() : flyerImg,
+    alt: t.title,
+  };
+  const logoSrc = cms?.logo ? urlFor(cms.logo).width(120).url() : logoImg;
 
   const servicesList = [
-    { id: 'Fauteuil', label: t.labels.fauteuil, icon: <Armchair size={16} />, media: chairSceneImg },
-    { id: 'Tenues', label: t.labels.tenues, icon: <Shirt size={16} />, media: dressesRackImg },
-    { id: 'Musique', label: t.labels.musique, icon: <Music size={16} />, media: musicImg },
-    { id: 'Gateaux', label: t.labels.gateaux, icon: <Coffee size={16} />, media: gateauxImg },
+    { id: 'Fauteuil', label: t.labels.fauteuil, icon: <Armchair size={16} />, media: cms?.chairSceneImage ? urlFor(cms.chairSceneImage).width(600).url() : chairSceneImg },
+    { id: 'Tenues', label: t.labels.tenues, icon: <Shirt size={16} />, media: cms?.dressesRackImage ? urlFor(cms.dressesRackImage).width(600).url() : dressesRackImg },
+    { id: 'Musique', label: t.labels.musique, icon: <Music size={16} />, media: cms?.musicImage ? urlFor(cms.musicImage).width(600).url() : musicImg },
+    { id: 'Gateaux', label: t.labels.gateaux, icon: <Coffee size={16} />, media: cms?.gateauxImage ? urlFor(cms.gateauxImage).width(600).url() : gateauxImg },
   ];
 
   const handleWhatsApp = () => {
@@ -102,7 +149,7 @@ const App = () => {
   const logoHeader = (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <img src={logoImg} alt={t.brand} className="w-11 h-11 rounded-full shadow-md" />
+        <img src={logoSrc} alt={t.brand} className="w-11 h-11 rounded-full shadow-md" />
         <div className="flex flex-col leading-tight">
           <span className="text-base font-black text-marrakech-gold tracking-tighter">{t.brand}</span>
           <span className="text-[10px] text-marrakech-ink/60 font-bold">{t.tagline}</span>
@@ -178,7 +225,7 @@ const App = () => {
 
             <div className="text-center pt-1">
               <a href={`tel:${PHONE_TEL}`} className="block text-2xl sm:text-3xl font-black text-marrakech-navy hover:text-marrakech-gold transition-colors tracking-tight">
-                {PHONE_DISPLAY}
+                {phoneDisplay}
               </a>
               <p className="text-marrakech-ink/60 text-sm mt-1">{t.sidebarHelper}</p>
             </div>
@@ -186,8 +233,8 @@ const App = () => {
             {leadForm}
 
             <div className="rounded-xl bg-marrakech-navy px-4 py-3 text-center shadow-md">
-              <p className="text-marrakech-gold font-black text-sm">{t.specialOffer.title}</p>
-              <p className="text-white/80 text-xs mt-0.5">{t.specialOffer.text}</p>
+              <p className="text-marrakech-gold font-black text-sm">{t.specialOfferTitle}</p>
+              <p className="text-white/80 text-xs mt-0.5">{t.specialOfferText}</p>
             </div>
 
             <button
@@ -241,14 +288,14 @@ const App = () => {
                       {t.title}
                     </p>
                     <span className="inline-block self-center sm:self-start bg-marrakech-gold/20 backdrop-blur-md border border-marrakech-gold/70 text-marrakech-gold-light font-medium text-xs sm:text-[21px] px-4 sm:px-5 py-1 sm:py-1.5 rounded-full shadow-[0_0_20px_rgba(184,144,62,0.35)] mt-1">
-                      {t.specialOffer.title}
+                      {t.specialOfferTitle}
                     </span>
                   </div>
                   <button
                     onClick={() => setLightbox(heroImage)}
                     className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy overflow-hidden"
                   >
-                    <img src={heroImage.src} alt={heroImage.alt} className={`w-full h-full object-contain sm:object-cover ${lang === 'fr' ? 'object-top' : ''}`} />
+                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover sm:object-top" />
                     {/* bright flare pulsing exactly on the flyer's own three lantern flames — physical positions, not mirrored by language direction */}
                     <div className="absolute inset-0 pointer-events-none">
                       {/* top-right hanging lantern */}

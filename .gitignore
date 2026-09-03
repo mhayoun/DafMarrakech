@@ -27,3 +27,4 @@ dist-ssr
 # Sensitive
 recovery-codes.txt
 .env*
+.env*.local

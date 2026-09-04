@@ -1,0 +1,45 @@
+import { defineField, defineType } from 'sanity'
+
+export const localeContent = defineType({
+  name: 'localeContent',
+  title: 'Texte',
+  type: 'object',
+  fields: [
+    defineField({ name: 'tagline', title: 'Tagline (sous le logo)', type: 'string' }),
+    defineField({ name: 'greeting', title: 'Salutation ("Mazal Tov !")', type: 'string' }),
+    defineField({ name: 'hook', title: 'Titre principal ("Henné royal !")', type: 'string' }),
+    defineField({ name: 'rentPromo', title: 'Texte du badge rond (location de matériel)', type: 'string' }),
+    defineField({ name: 'title', title: 'Question sous le titre', type: 'text', rows: 2 }),
+    defineField({ name: 'subtitle', title: 'Sous-titre', type: 'text', rows: 2 }),
+    defineField({ name: 'sidebarHelper', title: 'Texte sous le téléphone', type: 'string' }),
+    defineField({ name: 'logisticsTitle', title: 'Titre de la section réservation', type: 'string' }),
+    defineField({ name: 'specialOfferTitle', title: 'Titre "Offre spéciale"', type: 'string' }),
+    defineField({ name: 'specialOfferText', title: 'Texte "Offre spéciale"', type: 'string' }),
+    defineField({
+      name: 'usps',
+      title: 'Points forts (barre bleue, 3 courtes phrases)',
+      type: 'array',
+      of: [{ type: 'string' }],
+      validation: (Rule) => Rule.min(1).max(4),
+    }),
+    defineField({ name: 'viewFlyer', title: 'Lien "voir le flyer complet"', type: 'string' }),
+    defineField({ name: 'servicesTitle', title: 'Titre de la section services', type: 'string' }),
+    defineField({ name: 'privacyNote', title: 'Note de confidentialité (sous le formulaire)', type: 'text', rows: 2 }),
+    defineField({ name: 'copyright', title: 'Texte de copyright (pied de page)', type: 'string' }),
+    defineField({
+      name: 'labels',
+      title: 'Libellés',
+      type: 'object',
+      fields: [
+        defineField({ name: 'fauteuil', title: 'Service : Décor', type: 'string' }),
+        defineField({ name: 'tenues', title: 'Service : Tenues', type: 'string' }),
+        defineField({ name: 'musique', title: 'Service : Musique', type: 'string' }),
+        defineField({ name: 'gateaux', title: 'Service : Plateaux', type: 'string' }),
+        defineField({ name: 'nom', title: 'Champ formulaire : Nom', type: 'string' }),
+        defineField({ name: 'telephone', title: 'Champ formulaire : Téléphone', type: 'string' }),
+        defineField({ name: 'date', title: 'Champ formulaire : Date', type: 'string' }),
+        defineField({ name: 'btn', title: 'Bouton d\'envoi du formulaire', type: 'string' }),
+      ],
+    }),
+  ],
+})

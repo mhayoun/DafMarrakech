@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   Music, Shirt, Coffee, Armchair, Send,
   Languages, Phone, X, Sparkles,
-  Instagram, Facebook, MessageCircle, Navigation, Globe
+  Instagram, Facebook, MessageCircle, Navigation, Globe,
+  CupSoda, Utensils, Flower2, Camera
 } from 'lucide-react';
 import { fetchSiteContent, urlFor } from './lib/sanityClient';
 
@@ -13,8 +14,12 @@ import flyerImg from './assets/flyer.png';
 import chairSceneImg from './assets/chair-scene.png';
 import dressesRackImg from './assets/dresses-rack-hd.jpeg';
 import musicImg from './assets/music.png';
-import hinaHeroImg from './assets/hina-hero.jpeg';
-import hinaHeroFrImg from './assets/hero-fr.jpeg';
+import hinaHeroImg from './assets/hinaHeroImg.jpeg';
+import hinaHeroFrImg from './assets/hinaHeroImgFr.jpeg';
+import teasetImg from './assets/teaset.png';
+import ustensilsImg from './assets/ustensils.png';
+import henneImg from './assets/henne.jpeg';
+import coupleImg from './assets/couple.png';
 
 // Fallback business details, used until the CMS provides them
 const FALLBACK_PHONE_DISPLAY = '052-2336877';
@@ -70,6 +75,7 @@ const FALLBACK_CONTENT = {
     copyright: 'Tous droits réservés.',
     labels: {
       fauteuil: 'Décor', tenues: 'Tenues', musique: 'Musique', gateaux: 'Plateaux',
+      teaService: 'Service à thé', ustensils: 'Ustensiles', henne: 'Henné', photoCorner: 'Coin photo',
       nom: 'Nom complet*', telephone: 'Téléphone*', date: 'Date de l’événement', btn: 'Envoyer'
     },
   },
@@ -93,6 +99,7 @@ const FALLBACK_CONTENT = {
     copyright: 'כל הזכויות שמורות.',
     labels: {
       fauteuil: 'תפאורה', tenues: 'תלבושות', musique: 'מוזיקה', gateaux: 'מגשים',
+      teaService: 'הגשת תה', ustensils: 'כלים', henne: 'חינה', photoCorner: 'פינת צילום',
       nom: 'שם מלא*', telephone: 'טלפון*', date: 'תאריך האירוע', btn: 'שליחה'
     },
   }
@@ -139,6 +146,10 @@ const App = () => {
     { id: 'Tenues', label: t.labels.tenues, icon: <Shirt size={16} />, media: cms?.dressesRackImage ? urlFor(cms.dressesRackImage).width(600).url() : dressesRackImg },
     { id: 'Musique', label: t.labels.musique, icon: <Music size={16} />, media: cms?.musicImage ? urlFor(cms.musicImage).width(600).url() : musicImg },
     { id: 'Gateaux', label: t.labels.gateaux, icon: <Coffee size={16} />, media: cms?.gateauxImage ? urlFor(cms.gateauxImage).width(600).url() : gateauxImg },
+    { id: 'TeaService', label: t.labels.teaService, icon: <CupSoda size={16} />, media: teasetImg },
+    { id: 'Ustensils', label: t.labels.ustensils, icon: <Utensils size={16} />, media: ustensilsImg },
+    { id: 'Henne', label: t.labels.henne, icon: <Flower2 size={16} />, media: henneImg },
+    { id: 'PhotoCorner', label: t.labels.photoCorner, icon: <Camera size={16} />, media: coupleImg },
   ];
 
   const handleWhatsApp = () => {
@@ -247,8 +258,8 @@ const App = () => {
             <p className="text-[11px] text-marrakech-ink/50 leading-relaxed text-center">{t.privacyNote}</p>
           </div>
 
-          <div className="flex mt-auto p-5 sm:p-6 border-t border-marrakech-gold/20 items-center justify-center gap-5">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><MessageCircle size={20} /></a>
+          <div dir="ltr" className="flex mt-auto p-5 sm:p-6 border-t border-marrakech-gold/20 items-center justify-center gap-5">
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className={`text-marrakech-navy/70 hover:text-marrakech-gold transition-colors ${isRtl ? 'order-last' : ''}`}><MessageCircle size={20} /></a>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Instagram size={20} /></a>
             <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Facebook size={20} /></a>
             <a href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" aria-label="Website" className="text-marrakech-navy/70 hover:text-marrakech-gold transition-colors"><Globe size={20} /></a>
@@ -256,12 +267,20 @@ const App = () => {
           </div>
         </aside>
 
+        {/* Flyer — full-height column, desktop only: right of center for French, left of center for Hebrew */}
+        <button
+          onClick={() => setLightbox(heroImage)}
+          className={`hidden lg:block relative lg:flex-1 lg:h-screen lg:sticky lg:top-0 bg-marrakech-navy overflow-hidden ${isRtl ? 'lg:order-2' : 'lg:order-3'}`}
+        >
+          <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain" />
+        </button>
+
         {/* Content: headline, slider, social band, 4 services — that's it */}
-        <main dir={t.dir} className="order-1 lg:order-2 lg:flex-1 lg:h-screen lg:overflow-y-auto">
+        <main dir={t.dir} className={`order-1 lg:flex-1 lg:h-screen lg:overflow-y-auto ${isRtl ? 'lg:order-3' : 'lg:order-2'}`}>
           <section className="relative px-5 sm:px-8 lg:px-12 pt-8 sm:pt-12 pb-10">
-            {/* warm lantern-glow accents */}
-            <div className="lantern-glow absolute -top-6 start-4 w-40 h-40 rounded-full bg-marrakech-gold/40 blur-3xl pointer-events-none" />
-            <div className="lantern-glow-delayed absolute top-40 end-0 w-56 h-56 rounded-full bg-marrakech-gold-light/30 blur-3xl pointer-events-none" />
+            {/* warm lantern-glow accents — mobile/tablet only, removed on desktop next to the full-height flyer panel */}
+            <div className="lg:hidden lantern-glow absolute -top-6 start-4 w-40 h-40 rounded-full bg-marrakech-gold/40 blur-3xl pointer-events-none" />
+            <div className="lg:hidden lantern-glow-delayed absolute top-40 end-0 w-56 h-56 rounded-full bg-marrakech-gold-light/30 blur-3xl pointer-events-none" />
 
             {/* Hero — same 909:373 card ratio, type scale (32/60/32/21px) and Rubik weights as the reference model */}
             <div className="relative">
@@ -269,9 +288,9 @@ const App = () => {
               <span className="hidden sm:block absolute -top-5 -left-5 w-14 h-14 rounded-full border-[6px] border-marrakech-gold z-10 pointer-events-none" />
               <span className="hidden sm:block absolute top-24 -left-8 w-6 h-6 rounded-full bg-marrakech-maroon z-10 pointer-events-none" />
 
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-marrakech-navy border-4 border-white sm:aspect-[909/373]">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-marrakech-navy border-4 border-white sm:aspect-[909/373] lg:aspect-auto">
                 <div className="flex flex-col sm:flex-row items-stretch h-full">
-                  <div className="relative sm:w-1/2 p-4 sm:p-8 text-center sm:text-start flex flex-col justify-center gap-1 sm:gap-3 font-heavy">
+                  <div className={`relative sm:w-1/2 lg:w-full p-4 sm:p-8 lg:py-10 text-center sm:text-start flex flex-col justify-center gap-1 sm:gap-3 font-heavy ${isRtl ? 'sm:order-2' : ''}`}>
                     {/* Circular promo medallion — top-right corner for French, mirrors to top-left for Hebrew */}
                     <div className="hidden lg:flex promo-badge absolute top-4 end-4 z-20 items-center justify-center w-36 h-36 rounded-full bg-gradient-to-br from-marrakech-maroon to-marrakech-maroon-dark border-2 border-marrakech-gold shadow-2xl text-center">
                       <span className="promo-spin absolute -inset-2 rounded-full border-2 border-dashed border-marrakech-gold-light/70 pointer-events-none" />
@@ -293,9 +312,9 @@ const App = () => {
                   </div>
                   <button
                     onClick={() => setLightbox(heroImage)}
-                    className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy overflow-hidden"
+                    className={`relative sm:w-1/2 sm:h-full lg:hidden block w-full bg-marrakech-navy overflow-hidden ${isRtl ? 'sm:order-1' : ''}`}
                   >
-                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover sm:object-top" />
+                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-auto sm:h-full object-contain" />
                     {/* bright flare pulsing exactly on the flyer's own three lantern flames — physical positions, not mirrored by language direction */}
                     <div className="absolute inset-0 pointer-events-none">
                       {/* top-right hanging lantern */}
@@ -329,7 +348,7 @@ const App = () => {
               ))}
             </div>
 
-            {/* 4 services in one row */}
+            {/* 8 services, 4 per row */}
             <div className="grid grid-cols-4 gap-2 sm:gap-3 mt-6">
               {servicesList.map((s) => (
                 <button

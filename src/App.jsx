@@ -295,7 +295,7 @@ const App = () => {
                     onClick={() => setLightbox(heroImage)}
                     className="relative sm:w-1/2 aspect-square sm:aspect-auto sm:h-full block w-full bg-marrakech-navy overflow-hidden"
                   >
-                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain" />
+                    <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-contain sm:object-cover sm:object-top" />
                     {/* bright flare pulsing exactly on the flyer's own three lantern flames — physical positions, not mirrored by language direction */}
                     <div className="absolute inset-0 pointer-events-none">
                       {/* top-right hanging lantern */}
